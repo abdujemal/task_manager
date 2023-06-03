@@ -21,7 +21,7 @@ class DatabaseHelper {
 
   Future<Database> initializeDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}my_tasks.db';
+    String path = '${directory.path}myTasks.db';
 
     var notesDatabase =
         await openDatabase(path, version: 1, onCreate: _createDb);
@@ -52,7 +52,8 @@ class DatabaseHelper {
         'id INTEGER PRIMARY KEY AUTOINCREMENT,'
         'taskId INTEGER,'
         'date TEXT,'
-        'rank INTEGER'
+        'rank INTEGER,'
+        'individualRanks TEXT'
         ')');
 
     await db.execute('CREATE TABLE ${DatabaseConst.debt}('

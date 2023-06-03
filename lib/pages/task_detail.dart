@@ -5,6 +5,7 @@ import 'package:task_manager/constants.dart';
 import 'package:task_manager/model/task_history_model.dart';
 import 'package:task_manager/my_controller.dart';
 import 'package:task_manager/pages/add_task.dart';
+import 'package:task_manager/widgets/add_task_rank_history.dart';
 
 import '../model/task_model.dart';
 import '../widgets/add_task_history.dart';
@@ -166,14 +167,26 @@ class _TaskDetailState extends State<TaskDetail> {
                           : null;
                       return InkWell(
                         onTap: () {
-                          Get.bottomSheet(
-                            AddTaskHistory(
-                              dateTime: date,
-                              taskId: widget.id,
-                              taskHistoryModel:
-                                  events.isEmpty ? null : events[0].event,
-                            ),
-                          );
+                          if(myController.akhiraTasks[widget.id].description.contains(',')){
+                            Get.bottomSheet(
+                              AddTaskRankHistory(
+                                dateTime: date,
+                                taskId: widget.id,
+                                taskModel: taskModel,
+                                taskHistoryModel:
+                                    events.isEmpty ? null : events[0].event,
+                              ),
+                            );
+                          }else{
+                            Get.bottomSheet(
+                              AddTaskHistory(
+                                dateTime: date,
+                                taskId: widget.id,
+                                taskHistoryModel:
+                                    events.isEmpty ? null : events[0].event,
+                              ),
+                            );
+                          }
                         },
                         child: Ink(
                           height: 61,

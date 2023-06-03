@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/model/task_history_model.dart';
-import 'package:task_manager/model/task_model.dart';
 import 'package:task_manager/my_controller.dart';
 import 'package:task_manager/widgets/sl_btn.dart';
 import 'package:task_manager/widgets/sl_input.dart';
@@ -79,7 +78,9 @@ class _AddTaskHistoryState extends State<AddTaskHistory> {
                 } else {
                   if (widget.taskHistoryModel == null) {
                     print(TaskHistoryModel(
-                        id: widget.dateTime.millisecondsSinceEpoch,
+                        // id: widget.dateTime.millisecondsSinceEpoch,
+                        id: null,
+                        individualRanks: rankTc.text,
                         taskId: widget.taskId,
                         date: widget.dateTime.toString().split(" ")[0],
                         rank: int.parse(
@@ -87,8 +88,10 @@ class _AddTaskHistoryState extends State<AddTaskHistory> {
                         )).toMap());
                     myController.addTaskHistory(
                       TaskHistoryModel(
-                        id: widget.dateTime.millisecondsSinceEpoch,
+                        // id: widget.dateTime.millisecondsSinceEpoch,
+                        id: null,
                         taskId: widget.taskId,
+                        individualRanks: rankTc.text,
                         date: widget.dateTime.toString().split(" ")[0],
                         rank: int.parse(
                           rankTc.text,
@@ -99,6 +102,7 @@ class _AddTaskHistoryState extends State<AddTaskHistory> {
                     myController.updateTaskHistory(
                       TaskHistoryModel(
                         id: widget.taskHistoryModel!.id,
+                        individualRanks: rankTc.text,
                         taskId: widget.taskId,
                         date: widget.dateTime.toString().split(" ")[0],
                         rank: int.parse(
