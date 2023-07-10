@@ -37,7 +37,6 @@ class _TaskDetailState extends State<TaskDetail> {
           ? myController.akhiraTasks[widget.id].id! - 1
           : myController.dunyaTasks[widget.id].id! - 1,
     );
-    // print(myController.akhiraTasks[widget.id].id);
     setState(() {});
   }
 

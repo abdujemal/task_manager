@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/my_controller.dart';
+import 'package:task_manager/pages/alarm_page.dart';
 import 'package:task_manager/pages/debt_page.dart';
 import 'package:task_manager/pages/task_page.dart';
 import 'package:task_manager/widgets/add_dialogue.dart';
@@ -41,12 +42,23 @@ class _MainPageState extends State<MainPage> {
             logo(),
           ],
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Get.to(() => const AlarmPage());
+            },
+            icon: const Icon(Icons.alarm),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: const CircleBorder(),
         backgroundColor: primaryColor,
-        child: Icon(showDialogue ? Icons.close : Icons.add, size: 40,),
+        child: Icon(
+          showDialogue ? Icons.close : Icons.add,
+          size: 40,
+        ),
         onPressed: () {
           setState(() {
             showDialogue = !showDialogue;
@@ -58,11 +70,11 @@ class _MainPageState extends State<MainPage> {
         children: [
           Obx(() => pages[myController.currentIndex.value]),
           AnimatedPositioned(
-            bottom: showDialogue ? 50 : -160 ,
-            left:( MediaQuery.of(context).size.width/2)-115,
+            bottom: showDialogue ? 50 : -160,
+            left: (MediaQuery.of(context).size.width / 2) - 115,
             curve: Curves.bounceOut,
             duration: const Duration(seconds: 2),
-            child: const AddDialogue(), 
+            child: const AddDialogue(),
           )
         ],
       ),
