@@ -38,13 +38,14 @@ class _AddTaskRankHistoryState extends State<AddTaskRankHistory> {
     subTasks = widget.taskModel.description.split(",").toList();
 
     if (widget.taskHistoryModel != null) {
-      ranks = widget.taskHistoryModel!.individualRanks.split(',').map((e) => e == "true").toList();
+      ranks = widget.taskHistoryModel!.individualRanks
+          .split(',')
+          .map((e) => e == "true")
+          .toList();
     } else {
       ranks = List.generate(subTasks.length, (index) => false);
     }
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
@@ -115,21 +116,25 @@ class _AddTaskRankHistoryState extends State<AddTaskRankHistory> {
                             date: widget.dateTime.toString().split(" ")[0],
                             rank: rank)
                         .toMap());
-                    myController.addTaskHistory(TaskHistoryModel(
+                    myController.addTaskHistory(
+                      TaskHistoryModel(
                         // id: widget.dateTime.millisecondsSinceEpoch,
                         id: null,
                         individualRanks: individualRanks,
                         taskId: widget.taskId,
                         date: widget.dateTime.toString().split(" ")[0],
-                        rank: rank));
+                        rank: ((rank / subTasks.length) * 10).round(),
+                      ),
+                    );
                   } else {
                     myController.updateTaskHistory(
                       TaskHistoryModel(
-                          id: widget.taskHistoryModel!.id,
-                          individualRanks: individualRanks,
-                          taskId: widget.taskId,
-                          date: widget.dateTime.toString().split(" ")[0],
-                          rank: rank),
+                        id: widget.taskHistoryModel!.id,
+                        individualRanks: individualRanks,
+                        taskId: widget.taskId,
+                        date: widget.dateTime.toString().split(" ")[0],
+                        rank: ((rank / subTasks.length) * 10).round(),
+                      ),
                     );
                   }
                 },

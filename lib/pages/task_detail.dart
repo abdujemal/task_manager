@@ -1,6 +1,7 @@
 import 'package:calendar_view/calendar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/model/task_history_model.dart';
 import 'package:task_manager/my_controller.dart';
@@ -31,7 +32,12 @@ class _TaskDetailState extends State<TaskDetail> {
   }
 
   getDatas() async {
-    await myController.getTaskHistories(widget.id);
+    await myController.getTaskHistories(
+      widget.category == TaskCategory.akhira
+          ? myController.akhiraTasks[widget.id].id! - 1
+          : myController.dunyaTasks[widget.id].id! - 1,
+    );
+    // print(myController.akhiraTasks[widget.id].id);
     setState(() {});
   }
 
@@ -47,7 +53,7 @@ class _TaskDetailState extends State<TaskDetail> {
       appBar: AppBar(
         title: const Text("Task Detail"),
         centerTitle: true,
-        actions: [         
+        actions: [
           IconButton(
             onPressed: () {
               Get.to(
@@ -146,17 +152,33 @@ class _TaskDetailState extends State<TaskDetail> {
                   height: 20,
                 ),
                 SizedBox(
-                  height: 162,
+                  height: 500,
                   width: MediaQuery.of(context).size.width,
-                  child: WeekView<TaskHistoryModel>(
+                  child: MonthView<TaskHistoryModel>(
                     controller: eventController,
-                    eventTileBuilder: (date, events, boundry, start, end) {
-                      // Return your widget to display as event tile.
+                    headerStringBuilder: (date, {secondaryDate}) {
+                      return "${DateFormat("MMMM").format(date)} / ${date.year}";
+                    },
+                    weekDayBuilder: (index) {
                       return Container(
-                        child: Text('${events[0].event!.rank}'),
+                        height: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            WeekDays.values[index].name
+                                .substring(0, 1)
+                                .capitalize!,
+                          ),
+                        ),
                       );
                     },
-                    fullDayEventBuilder: (events, date) {
+                    cellAspectRatio: 1,
+                    cellBuilder: (date, events, isToday, isInMonth) {
                       // Return your widget to display full day event view.
                       Color? color = events.isNotEmpty
                           ? events[0].event!.rank <= 3
@@ -167,17 +189,18 @@ class _TaskDetailState extends State<TaskDetail> {
                           : null;
                       return InkWell(
                         onTap: () {
-                          if(myController.akhiraTasks[widget.id].description.contains(',')){
+                          if (myController.akhiraTasks[widget.id].description
+                              .contains(',')) {
                             Get.bottomSheet(
                               AddTaskRankHistory(
                                 dateTime: date,
-                                taskId: widget.id,
+                                taskId: taskModel.id! - 1,
                                 taskModel: taskModel,
                                 taskHistoryModel:
                                     events.isEmpty ? null : events[0].event,
                               ),
                             );
-                          }else{
+                          } else {
                             Get.bottomSheet(
                               AddTaskHistory(
                                 dateTime: date,
@@ -191,11 +214,17 @@ class _TaskDetailState extends State<TaskDetail> {
                         child: Ink(
                           height: 61,
                           child: Center(
-                            child: Text(
-                              events.isEmpty
-                                  ? 'NG'
-                                  : '${events[0].event!.rank}',
-                              style: TextStyle(color: color),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("${date.day}"),
+                                Text(
+                                  events.isEmpty
+                                      ? 'NG'
+                                      : '${events[0].event!.rank}',
+                                  style: TextStyle(color: color),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -204,55 +233,6 @@ class _TaskDetailState extends State<TaskDetail> {
                     headerStyle: HeaderStyle(
                       decoration: BoxDecoration(color: black),
                     ),
-
-                    timeLineBuilder: (date) => Container(),
-                    weekDayBuilder: (date) => Container(
-                      color: black,
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(WeekDays.values
-                                .map((e) => e
-                                    .toString()
-                                    .split(".")[1]
-                                    .substring(0, 1)
-                                    .capitalize!)
-                                .toList()[date.weekday - 1]),
-                            Text("${date.day}"),
-                          ],
-                        ),
-                      ),
-                    ),
-                    weekNumberBuilder: (firstDayOfWeek) {
-                      final daysToAdd =
-                          DateTime.thursday - firstDayOfWeek.weekday;
-                      final thursday = daysToAdd > 0
-                          ? firstDayOfWeek.add(Duration(days: daysToAdd))
-                          : firstDayOfWeek
-                              .subtract(Duration(days: daysToAdd.abs()));
-                      final weekNumber = (firstDayOfWeek
-                                      .difference(DateTime(thursday.year))
-                                      .inDays /
-                                  7)
-                              .floor() +
-                          1;
-                      return Container(
-                        color: black,
-                        alignment: Alignment.center,
-                        child: Text("$weekNumber"),
-                      );
-                    },
-                    backgroundColor: black,
-                    showLiveTimeLineInAllDays: false,
-                    timeLineOffset: 0,
-                    minDay: DateTime.parse(taskModel.startDate),
-                    maxDay: DateTime.parse(taskModel.endDate),
-                    initialDay: DateTime.now(),
-                    heightPerMinute:
-                        1, // height occupied by 1 minute time span.
-                    eventArranger:
-                        const SideEventArranger(), // To define how simultaneous events will be arranged.
                     startDay: WeekDays.sunday,
                   ),
                 ),

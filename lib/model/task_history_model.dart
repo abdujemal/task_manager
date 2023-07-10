@@ -7,7 +7,7 @@ class TaskHistoryModel extends Equatable {
   final int? id;
   final int taskId;
   final String date;
-  final int rank;
+  final int rank; 
   final String individualRanks;
   const TaskHistoryModel({
     required this.individualRanks,

@@ -27,7 +27,7 @@ class _SplashPageState extends State<SplashPage> {
       myController.getDebt();
       myController.getTasks();
 
-      sendNotification();
+      // sendNotification();
     });
 
     Future.delayed(const Duration(seconds: 5)).then((value) {
@@ -36,14 +36,14 @@ class _SplashPageState extends State<SplashPage> {
     });
   }
 
-  sendNotification() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool alreadySet = prefs.getBool("alreadySet") ?? false;
-    if (!alreadySet) {
-      NotificationService()
-          .showNotification(0, "Anouncement", "Please evaluate your self.");
-    }
-  }
+  // sendNotification() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   bool alreadySet = prefs.getBool("alreadySet") ?? false;
+  //   if (!alreadySet) {
+  //     NotificationService()
+  //         .showNotification(0, "Anouncement", "Please evaluate your self.");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -5,7 +5,7 @@ import 'package:task_manager/pages/splash_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await NotificationService().initNotification();
+  // await NotificationService().initNotification();
   runApp(const MyApp());
 }
 
