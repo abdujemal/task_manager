@@ -60,11 +60,11 @@ class _AlarmPageState extends State<AlarmPage> {
                   final totalMin =
                       (int.parse(hourTc.text) * 60) + int.parse(minTc.text);
                   print(totalMin);
-                  // await AndroidAlarmManager.oneShot(
-                  //   Duration(minutes: totalMin),
-                  //   1,
-                  //   printHello,
-                  // );
+                  await AndroidAlarmManager.oneShot(
+                    Duration(minutes: totalMin),
+                    1,
+                    printHello,
+                  );
 
                   // AndroidAlarmManager.periodic(duration, id, callback)
 
