@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:task_manager/pages/Debt%20tabs/allahs_debt_tab.dart';
 import 'package:task_manager/pages/Debt%20tabs/people_debt_tab.dart';
 
@@ -17,8 +15,8 @@ class _DebtPageState extends State<DebtPage> with TickerProviderStateMixin {
   TabController? tabController;
   
   List<Widget> pages = [
-    AllahsDebt(),
-    PeoplesDebt(),
+    const AllahsDebt(),
+    const PeoplesDebt(),
   ];
 
   @override

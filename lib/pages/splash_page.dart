@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/helper/database_helper.dart';
 import 'package:task_manager/my_controller.dart';
-import 'package:task_manager/notification_service.dart';
 import 'package:task_manager/pages/main_page.dart';
 
 class SplashPage extends StatefulWidget {

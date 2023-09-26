@@ -38,10 +38,10 @@ class _MyDropdownState extends State<MyDropdown> {
             padding: const EdgeInsets.only(left: 15),
             child: Text(
               widget.title,
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Container(

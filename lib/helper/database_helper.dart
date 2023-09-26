@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:task_manager/model/debt_model.dart';
 import 'package:task_manager/model/task_history_model.dart';
 import 'package:task_manager/model/task_model.dart';
+import 'package:task_manager/notification_service.dart';
 
 import '../constants.dart';
 
@@ -21,7 +23,7 @@ class DatabaseHelper {
 
   Future<Database> initializeDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}myTasks.db';
+    String path = '${directory.path}taskManager.db';
 
     var notesDatabase =
         await openDatabase(path, version: 1, onCreate: _createDb);
@@ -42,6 +44,7 @@ class DatabaseHelper {
         'id INTEGER PRIMARY KEY AUTOINCREMENT,'
         'title TEXT,'
         'description TEXT,'
+        'scheduleTime TEXT,'
         'status TEXT,'
         'category TEXT,'
         'startDate TEXT,'
@@ -103,9 +106,13 @@ class DatabaseHelper {
   }
 
   //inserting data
-  Future<int> insertTask(TaskModel taskModel) async {
+  Future<int> insertTask(TaskModel taskModel, DateTime dateTime) async {
     Database? db = await database;
     var result = await db!.insert(DatabaseConst.task, taskModel.toMap());
+    // AndroidAlarmManager.periodic(const Duration(days: 1), result, ring,
+    //     startAt: dateTime);
+    NotificationService().showNotification(
+        result, taskModel.title, "Check right or your done!", dateTime);
     return result;
   }
 
@@ -124,10 +131,14 @@ class DatabaseHelper {
   }
 
   //update data
-  Future<int> updateTask(TaskModel taskModel) async {
+  Future<int> updateTask(TaskModel taskModel, DateTime dateTime) async {
     var db = await database;
     var result = await db!.update(DatabaseConst.task, taskModel.toMap(),
         where: 'id = ?', whereArgs: [taskModel.id]);
+    // AndroidAlarmManager.periodic(const Duration(days: 1), result, ring,
+    //     startAt: dateTime);
+    NotificationService().showNotification(
+        result, taskModel.title, "Check it right now or your done!", dateTime);
     return result;
   }
 
@@ -151,6 +162,8 @@ class DatabaseHelper {
     var db = await database;
     var result =
         await db!.rawDelete('DELETE FROM ${DatabaseConst.task} WHERE id = $id');
+    // AndroidAlarmManager.cancel(id);
+    NotificationService().cancelNotification(id);
     return result;
   }
 
@@ -179,4 +192,9 @@ class DatabaseHelper {
   //   int result = Sqflite.firstIntValue(x);
   //   return result;
   // }
+}
+
+ring() {
+  NotificationService().showNotification(
+      1, "Check your task", "do it right now.", DateTime.now());
 }

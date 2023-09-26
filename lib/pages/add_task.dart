@@ -1,6 +1,7 @@
-import 'package:date_time_picker/date_time_picker.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/model/task_model.dart';
 import 'package:task_manager/my_controller.dart';
@@ -35,10 +36,47 @@ class _AddTaskState extends State<AddTask> {
 
   var formKey = GlobalKey<FormState>();
 
+  String notificationTime = "";
+
+  final _timeController = TextEditingController();
+
+  DateTime selectedSheduleDateTime = DateTime.now();
+
+  Future<void> _showTimePicker(BuildContext context) async {
+    final TimeOfDay? selectedTime = await showTimePicker(
+      context: context,
+      initialTime: _timeController.text.isEmpty
+          ? TimeOfDay.now()
+          : TimeOfDay.fromDateTime(
+              selectedSheduleDateTime,
+            ),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+          child: child!,
+        );
+      },
+    );
+
+    if (selectedTime != null) {
+      final DateTime currentTime = DateTime.now();
+      selectedSheduleDateTime = DateTime(
+        currentTime.year,
+        currentTime.month,
+        currentTime.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      );
+
+      _timeController.text = DateFormat.jm().format(selectedSheduleDateTime);
+    }
+  }
+
   @override
   void initState() {
     startDate = DateTime.now().toString().split(" ")[0];
     endDate = DateTime.now().toString().split(" ")[0];
+    notificationTime = DateTime.now().toString().split(" ")[1];
 
     if (widget.taskModel != null) {
       TaskModel taskModel = widget.taskModel!;
@@ -48,6 +86,9 @@ class _AddTaskState extends State<AddTask> {
       status = taskModel.status;
       titleTc.text = taskModel.title;
       descriptionTc.text = taskModel.description;
+      _timeController.text = DateFormat.jm().format(
+        DateTime.parse(taskModel.scheduleTime),
+      );
       setState(() {});
     }
     super.initState();
@@ -126,6 +167,22 @@ class _AddTaskState extends State<AddTask> {
                 const SizedBox(
                   height: 15,
                 ),
+                SLInput(
+                  title: "Notification Schedule",
+                  hint: "",
+                  keyboardType: TextInputType.text,
+                  controller: _timeController,
+                  isOutlined: true,
+                  inputColor: Colors.white,
+                  otherColor: Colors.grey,
+                  readOnly: true,
+                  onTap: () {
+                    _showTimePicker(context);
+                  },
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
                 PickDate(
                   title: "Start Date",
                   currentDate: startDate,
@@ -181,19 +238,23 @@ class _AddTaskState extends State<AddTask> {
                               category: category,
                               startDate: startDate,
                               endDate: endDate,
+                              scheduleTime: selectedSheduleDateTime.toString(),
                             ),
+                            selectedSheduleDateTime,
                           );
                         } else {
                           myController.addTask(
                             TaskModel(
-                              id: null,
-                              title: titleTc.text,
-                              description: descriptionTc.text,
-                              status: status,
-                              category: category,
-                              startDate: startDate,
-                              endDate: endDate,
-                            ),
+                                id: null,
+                                title: titleTc.text,
+                                description: descriptionTc.text,
+                                status: status,
+                                category: category,
+                                startDate: startDate,
+                                endDate: endDate,
+                                scheduleTime:
+                                    selectedSheduleDateTime.toString()),
+                            selectedSheduleDateTime,
                           );
                         }
                       }

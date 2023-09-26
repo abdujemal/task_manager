@@ -1,15 +1,18 @@
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class PickDate extends StatefulWidget {
   final String title;
   final String currentDate;
   final void Function(String val) onChange;
+  final DateTimePickerType? dateTimePickerType;
   const PickDate({
     super.key,
     required this.title,
-    required this.currentDate, 
+    required this.currentDate,
     required this.onChange,
+    this.dateTimePickerType,
   });
 
   @override
@@ -28,7 +31,7 @@ class _PickDateState extends State<PickDate> {
             padding: const EdgeInsets.only(left: 15),
             child: Text(
               widget.title,
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
           const SizedBox(
@@ -36,21 +39,38 @@ class _PickDateState extends State<PickDate> {
           ),
           DateTimePicker(
             initialValue: widget.currentDate,
-            decoration: const InputDecoration(
-              suffix: Icon(Icons.event),
-              enabledBorder: OutlineInputBorder(
+            decoration: InputDecoration(
+              suffix: widget.dateTimePickerType == DateTimePickerType.time
+                  ? const Icon(Icons.timer)
+                  : const Icon(Icons.event),
+              enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
-              focusedBorder: OutlineInputBorder(
+              focusedBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey),
               ),
             ),
-            type: DateTimePickerType.date,
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2100),
-            dateLabelText: 'Date',
-            dateMask: 'd MMM, yyyy',
-            onChanged: widget.onChange
+            type: widget.dateTimePickerType ?? DateTimePickerType.date,
+            firstDate: widget.dateTimePickerType == DateTimePickerType.time
+                ? null
+                : DateTime(2000),
+            lastDate: widget.dateTimePickerType == DateTimePickerType.time
+                ? null
+                : DateTime(2100),
+            dateLabelText: widget.title,
+            timeLabelText: widget.title,
+            dateMask: widget.dateTimePickerType == DateTimePickerType.time
+                ? null
+                : 'd MMM, yyyy',
+            locale: widget.dateTimePickerType == DateTimePickerType.time
+                ? const Locale('en', 'US')
+                : null,
+            use24HourFormat: false,
+            onChanged: widget.onChange,
+            // validator: (value) {
+            //   print(value);
+            //   return value;
+            // },
           ),
         ],
       ),

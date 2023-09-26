@@ -1,11 +1,9 @@
 import 'package:get/get.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/helper/database_helper.dart';
 import 'package:task_manager/model/debt_model.dart';
 import 'package:task_manager/model/task_history_model.dart';
 import 'package:task_manager/model/task_model.dart';
-import 'package:task_manager/pages/add_debt.dart';
 
 class MyController extends GetxController {
   RxList<TaskModel> dunyaTasks = <TaskModel>[].obs;
@@ -74,7 +72,7 @@ class MyController extends GetxController {
       final res = await DatabaseHelper().getTaskHistoryList(id);
       taskHistorys.value = res;
       print('taskHM id: $id');
-      print("taskHM History: ${taskHistorys.value}");
+      print("taskHM History: $taskHistorys");
       taskHistorystatus.value = RequestStatus.loaded;
     } catch (e) {
       toast(e.toString(), ToastType.error);
@@ -84,10 +82,10 @@ class MyController extends GetxController {
   
   // add
     
-  addTask(TaskModel taskModel) async {
+  addTask(TaskModel taskModel, DateTime dateTime) async {
     status.value = RequestStatus.loading;
     try {
-      await DatabaseHelper().insertTask(taskModel);
+      await DatabaseHelper().insertTask(taskModel, dateTime);
       await getTasks();
       Get.back();
       status.value = RequestStatus.loaded;
@@ -137,10 +135,10 @@ class MyController extends GetxController {
     }
   }
 
-  updateTask(TaskModel taskModel) async {
+  updateTask(TaskModel taskModel, DateTime dateTime) async {
     status.value = RequestStatus.loading;
     try {
-      await DatabaseHelper().updateTask(taskModel);
+      await DatabaseHelper().updateTask(taskModel, dateTime);
       await getTasks();
       Get.back();
       status.value = RequestStatus.loaded;

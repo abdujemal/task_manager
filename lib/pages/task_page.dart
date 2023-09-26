@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/pages/Task%20tabs/akhira_task_tab.dart';
 import 'package:task_manager/pages/Task%20tabs/dunya_task_tab.dart';

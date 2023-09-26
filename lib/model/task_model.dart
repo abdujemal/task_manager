@@ -11,7 +11,9 @@ class TaskModel extends Equatable {
   final String category;
   final String startDate;
   final String endDate;
+  final String scheduleTime;
   const TaskModel({
+    required this.scheduleTime,
     required this.id,
     required this.title,
     required this.description,
@@ -21,32 +23,40 @@ class TaskModel extends Equatable {
     required this.endDate,
   });
 
-
   @override
-  List<Object?> get props => [id, title, description, status, category, startDate, endDate];
-
+  List<Object?> get props => [
+        id,
+        title,
+        description,
+        status,
+        category,
+        startDate,
+        endDate,
+        scheduleTime,
+      ];
 
   Map<String, dynamic> toMap() {
-    return
-    id == null ?
-    <String, dynamic>{
-      // 'id': id,
-      'title': title,
-      'description': description,
-      'status': status,
-      'category': category,
-      'startDate': startDate,
-      'endDate': endDate,
-    }:    
-     <String, dynamic>{
-      'id': id,
-      'title': title,
-      'description': description,
-      'status': status,
-      'category': category,
-      'startDate': startDate,
-      'endDate': endDate,
-    };
+    return id == null
+        ? <String, dynamic>{
+            // 'id': id,
+            'title': title,
+            'description': description,
+            'status': status,
+            'scheduleTime': scheduleTime,
+            'category': category,
+            'startDate': startDate,
+            'endDate': endDate,
+          }
+        : <String, dynamic>{
+            'id': id,
+            'title': title,
+            'description': description,
+            'status': status,
+            'scheduleTime': scheduleTime,
+            'category': category,
+            'startDate': startDate,
+            'endDate': endDate,
+          };
   }
 
   factory TaskModel.fromMap(Map<String, dynamic> map) {
@@ -55,6 +65,7 @@ class TaskModel extends Equatable {
       title: map['title'] as String,
       description: map['description'] as String,
       status: map['status'] as String,
+      scheduleTime: map["scheduleTime"] ?? DateTime.now().toString(),
       category: map['category'] as String,
       startDate: map['startDate'] as String,
       endDate: map['endDate'] as String,
@@ -63,5 +74,6 @@ class TaskModel extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory TaskModel.fromJson(String source) => TaskModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory TaskModel.fromJson(String source) =>
+      TaskModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/constants.dart';
 import 'package:task_manager/my_controller.dart';
-import 'package:task_manager/pages/alarm_page.dart';
 import 'package:task_manager/pages/debt_page.dart';
 import 'package:task_manager/pages/task_page.dart';
 import 'package:task_manager/widgets/add_dialogue.dart';
@@ -44,8 +43,9 @@ class _MainPageState extends State<MainPage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Get.to(() => const AlarmPage());
+            onPressed: () async {
+              // Get.to(() => const AlarmPage());
+              // await NotificationService().showNotification(1, "title", "body");
             },
             icon: const Icon(Icons.alarm),
           ),

@@ -9,6 +9,7 @@ import 'package:task_manager/pages/add_task.dart';
 import 'package:task_manager/widgets/add_task_rank_history.dart';
 
 import '../model/task_model.dart';
+import '../notification_service.dart';
 import '../widgets/add_task_history.dart';
 
 class TaskDetail extends StatefulWidget {
@@ -28,6 +29,14 @@ class _TaskDetailState extends State<TaskDetail> {
   @override
   void initState() {
     getDatas();
+    NotificationService().showNotification(
+      widget.id,
+      myController.akhiraTasks[widget.id].title,
+      "Check it right now or your done!",
+      DateTime.parse(
+        myController.akhiraTasks[widget.id].scheduleTime,
+      ),
+    );
     super.initState();
   }
 

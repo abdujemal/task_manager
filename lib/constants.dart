@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 Color primaryColor = Colors.amber;
 
-Color black = Color.fromARGB(
+Color black = const Color.fromARGB(
   255,
   36,
   36,

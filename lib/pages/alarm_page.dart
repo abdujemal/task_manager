@@ -1,7 +1,4 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/constants.dart';
 
 class AlarmPage extends StatefulWidget {
@@ -60,11 +57,11 @@ class _AlarmPageState extends State<AlarmPage> {
                   final totalMin =
                       (int.parse(hourTc.text) * 60) + int.parse(minTc.text);
                   print(totalMin);
-                  await AndroidAlarmManager.oneShot(
-                    Duration(minutes: totalMin),
-                    1,
-                    printHello,
-                  );
+                  // await AndroidAlarmManager.oneShot(
+                  //   Duration(minutes: totalMin),
+                  //   1,
+                  //   printHello,
+                  // );
 
                   // AndroidAlarmManager.periodic(duration, id, callback)
 
@@ -98,8 +95,9 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 }
 
-printHello() {
-  AudioPlayer().play(AssetSource("alarm1.wav")).then((value) {
-    AudioPlayer().play(AssetSource("alarm2.wav"));
-  });
-}
+// printHello() {
+//   toast("Alarm works", ToastType.success);
+//   AudioPlayer().play(AssetSource("alarm1.wav")).then((value) {
+//     AudioPlayer().play(AssetSource("alarm2.wav"));
+//   });
+// }
