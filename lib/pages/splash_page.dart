@@ -48,10 +48,13 @@ class _SplashPageState extends State<SplashPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Icons.task_sharp,
-              color: primaryColor,
-              size: 80,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Image.asset(
+                "assets/logo.jpeg",
+                height: 80,
+                width: 80,
+              ),
             ),
             const SizedBox(
               height: 20,

@@ -30,10 +30,13 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.task_sharp,
-              color: primaryColor,
-              size: 40,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(7),
+              child: Image.asset(
+                "assets/logo.jpeg",
+                height: 40,
+                width: 40,
+              ),
             ),
             const SizedBox(
               width: 10,
@@ -75,7 +78,7 @@ class _MainPageState extends State<MainPage> {
             curve: Curves.bounceOut,
             duration: const Duration(seconds: 2),
             child: const AddDialogue(),
-          )
+          ),
         ],
       ),
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Color primaryColor = Colors.amber;
+Color primaryColor = const Color(0xff6d87de);
 
 Color black = const Color.fromARGB(
   255,

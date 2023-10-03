@@ -26,32 +26,36 @@ class BottomNavItem extends StatelessWidget {
         height: 70,
         width: 60,
         child: Obx(
-            () => SizedBox(
-              height: 70,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    iconData,
+          () => SizedBox(
+            height: 70,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  iconData,
+                  color: myController.currentIndex.value == index
+                      ? Colors.white
+                      : Colors.white30,
+                  size: 35,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  label,
+                  style: TextStyle(
                     color: myController.currentIndex.value == index
                         ? Colors.white
-                        : Colors.grey,
-                    size: 35,
+                        : Colors.white30,
+                    fontSize: 13,
                   ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    label,
-                    style: const TextStyle(color: Colors.white, fontSize: 13),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
         ),
-      
+      ),
     );
   }
 }

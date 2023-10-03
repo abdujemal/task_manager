@@ -32,9 +32,9 @@ class DebtItem extends StatelessWidget {
                 Icons.check,
                 color: Colors.green,
               )
-            : const Icon(
+            : Icon(
                 Icons.more_horiz,
-                color: Colors.orange,
+                color: primaryColor,
               ),
       ),
     );

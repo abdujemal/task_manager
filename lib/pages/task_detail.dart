@@ -41,11 +41,68 @@ class _TaskDetailState extends State<TaskDetail> {
   }
 
   getDatas() async {
-    await myController.getTaskHistories(
-      widget.category == TaskCategory.akhira
-          ? myController.akhiraTasks[widget.id].id! - 1
-          : myController.dunyaTasks[widget.id].id! - 1,
-    );
+    print("task id ${myController.akhiraTasks[widget.id].id!}");
+    myController
+        .getTaskHistories(myController.akhiraTasks[widget.id].id!)
+        .then((value) async {
+      // populating task history that is passed
+      if (myController.taskHistorys.isNotEmpty) {
+        TaskHistoryModel lastHistory = myController.taskHistorys.last;
+        DateTime lastDate = DateTime.parse(lastHistory.date);
+        DateTime today =
+            DateTime.parse(DateTime.now().toString().split(" ")[0]);
+        print("lastHistory: ${lastHistory.date}");
+
+        for (int day in List.generate(
+            today.difference(lastDate).inDays, (index) => index + 1)) {
+          if (lastDate.add(Duration(days: day)).compareTo(today) == 0) {
+            DateTime scheduleTime =
+                DateTime.parse(myController.akhiraTasks[widget.id].scheduleTime)
+                    .add(const Duration(hours: 2));
+            DateTime now = DateTime.now();
+
+            if (now.isAfter(scheduleTime)) {
+              await myController.addTaskHistory(
+                TaskHistoryModel(
+                  // id: widget.dateTime.millisecondsSinceEpoch,
+                  id: null,
+                  individualRanks: myController
+                      .akhiraTasks[widget.id].description
+                      .split(',')
+                      .map((e) => "false")
+                      .join(","),
+                  taskId: myController.akhiraTasks[widget.id].id!,
+                  date: lastDate
+                      .add(Duration(days: day))
+                      .toString()
+                      .split(" ")[0],
+                  rank: 0,
+                ),
+                getBack: false,
+              );
+            }
+          } else {
+            await myController.addTaskHistory(
+              TaskHistoryModel(
+                // id: widget.dateTime.millisecondsSinceEpoch,
+                id: null,
+                individualRanks: myController.akhiraTasks[widget.id].description
+                    .split(',')
+                    .map((e) => "false")
+                    .join(","),
+                taskId: myController.akhiraTasks[widget.id].id!,
+                date:
+                    lastDate.add(Duration(days: day)).toString().split(" ")[0],
+                rank: 0,
+              ),
+              getBack: false,
+            );
+          }
+        }
+        myController.getTaskHistories(myController.akhiraTasks[widget.id].id!);
+      }
+    });
+
     setState(() {});
   }
 
@@ -163,6 +220,10 @@ class _TaskDetailState extends State<TaskDetail> {
                   height: 500,
                   width: MediaQuery.of(context).size.width,
                   child: MonthView<TaskHistoryModel>(
+                    minMonth: DateTime.parse(
+                        myController.akhiraTasks[widget.id].startDate),
+                    maxMonth: DateTime.parse(
+                        myController.akhiraTasks[widget.id].endDate),
                     controller: eventController,
                     headerStringBuilder: (date, {secondaryDate}) {
                       return "${DateFormat("MMMM").format(date)} / ${date.year}";
@@ -199,15 +260,33 @@ class _TaskDetailState extends State<TaskDetail> {
                         onTap: () {
                           if (myController.akhiraTasks[widget.id].description
                               .contains(',')) {
-                            Get.bottomSheet(
-                              AddTaskRankHistory(
-                                dateTime: date,
-                                taskId: taskModel.id! - 1,
-                                taskModel: taskModel,
-                                taskHistoryModel:
-                                    events.isEmpty ? null : events[0].event,
-                              ),
-                            );
+                            DateTime schedule = DateTime.parse(myController
+                                .akhiraTasks[widget.id].scheduleTime);
+
+                            DateTime scheduleTime = DateTime(
+                              date.year,
+                              date.month,
+                              date.day,
+                              schedule.hour,
+                              schedule.minute,
+                            ).add(const Duration(hours: 2));
+
+                            if (DateTime.now().isBefore(scheduleTime)) {
+                              Get.bottomSheet(
+                                AddTaskRankHistory(
+                                  dateTime: date,
+                                  taskId: taskModel.id!,
+                                  taskModel: taskModel,
+                                  taskHistoryModel:
+                                      events.isEmpty ? null : events[0].event,
+                                ),
+                              );
+                            } else {
+                              toast(
+                                "I'm sorry you can't do nothing about it.",
+                                ToastType.warning,
+                              );
+                            }
                           } else {
                             Get.bottomSheet(
                               AddTaskHistory(

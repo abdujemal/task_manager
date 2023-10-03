@@ -112,7 +112,7 @@ class DatabaseHelper {
     // AndroidAlarmManager.periodic(const Duration(days: 1), result, ring,
     //     startAt: dateTime);
     NotificationService().showNotification(
-        result, taskModel.title, "Check right or your done!", dateTime);
+        result, taskModel.title, "Check it right now or your done!", dateTime);
     return result;
   }
 

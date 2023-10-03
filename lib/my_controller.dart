@@ -65,12 +65,17 @@ class MyController extends GetxController {
     }
   }
 
-  getTaskHistories(int id) async {
+  Future<void> getTaskHistories(int id) async {
     taskHistorystatus.value = RequestStatus.loading;
     try {
       taskHistorys.value = [];
       final res = await DatabaseHelper().getTaskHistoryList(id);
       taskHistorys.value = res;
+      taskHistorys.sort(
+        (a, b) => DateTime.parse(a.date).compareTo(
+          DateTime.parse(b.date),
+        ),
+      );
       print('taskHM id: $id');
       print("taskHM History: $taskHistorys");
       taskHistorystatus.value = RequestStatus.loaded;
@@ -79,9 +84,9 @@ class MyController extends GetxController {
       taskHistorystatus.value = RequestStatus.error;
     }
   }
-  
+
   // add
-    
+
   addTask(TaskModel taskModel, DateTime dateTime) async {
     status.value = RequestStatus.loading;
     try {
@@ -108,13 +113,16 @@ class MyController extends GetxController {
     }
   }
 
-  addTaskHistory(TaskHistoryModel taskHistoryModel) async {
+  Future<void> addTaskHistory(TaskHistoryModel taskHistoryModel,
+      {bool getBack = true}) async {
     status.value = RequestStatus.loading;
     try {
       await DatabaseHelper().insertTaskHistory(taskHistoryModel);
       await getTaskHistories(taskHistoryModel.taskId);
       status.value = RequestStatus.loaded;
-      Get.back();
+      if (getBack) {
+        Get.back();
+      }
     } catch (e) {
       toast(e.toString(), ToastType.error);
       status.value = RequestStatus.error;

@@ -60,12 +60,20 @@ class TaskModel extends Equatable {
   }
 
   factory TaskModel.fromMap(Map<String, dynamic> map) {
+    DateTime schedule = DateTime.parse(map["scheduleTime"] as String);
+    DateTime now = DateTime.now();
     return TaskModel(
       id: map['id'] as int,
       title: map['title'] as String,
       description: map['description'] as String,
       status: map['status'] as String,
-      scheduleTime: map["scheduleTime"] ?? DateTime.now().toString(),
+      scheduleTime: DateTime(
+        now.year,
+        now.month,
+        now.day,
+        schedule.hour,
+        schedule.minute,
+      ).toString(),
       category: map['category'] as String,
       startDate: map['startDate'] as String,
       endDate: map['endDate'] as String,
