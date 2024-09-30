@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/model/task_model.dart';
@@ -105,6 +104,27 @@ class _AddTaskRankHistoryState extends State<AddTaskRankHistory> {
                     }
                     i++;
                   }
+
+                  int subTasklen = subTasks
+                      .where((e) =>
+                          !e.contains("[Optional]") && !e.contains("[Bonus]"))
+                      .length;
+                  int j = 0;
+                  int bonuses = subTasks.where((e) {
+                        if (ranks[j] == true) {
+                          j++;
+                          if (e.contains("[Bonus]")) {
+                            rank--;
+                            return true;
+                          }
+                          return false;
+                        } else {
+                          j++;
+                          return false;
+                        }
+                      }).length *
+                      10;
+                  print(bonuses);
                   print(individualRanks);
                   if (widget.taskHistoryModel == null) {
                     print(TaskHistoryModel(
@@ -122,7 +142,7 @@ class _AddTaskRankHistoryState extends State<AddTaskRankHistory> {
                         individualRanks: individualRanks,
                         taskId: widget.taskId,
                         date: widget.dateTime.toString().split(" ")[0],
-                        rank: ((rank / subTasks.length) * 10).round(),
+                        rank: ((rank / subTasklen) * 10).round() + bonuses,
                       ),
                     );
                   } else {
@@ -132,7 +152,7 @@ class _AddTaskRankHistoryState extends State<AddTaskRankHistory> {
                         individualRanks: individualRanks,
                         taskId: widget.taskId,
                         date: widget.dateTime.toString().split(" ")[0],
-                        rank: ((rank / subTasks.length) * 10).round(),
+                        rank: ((rank / subTasklen) * 10).round() + bonuses,
                       ),
                     );
                   }

@@ -144,10 +144,10 @@ class _TaskDetailState extends State<TaskDetail> {
             eventController.add(
               CalendarEventData(
                   startTime: DateTime.parse(model.date),
-                  endTime:
-                      DateTime.parse(model.date).add(const Duration(days: 1)),
-                  endDate:
-                      DateTime.parse(model.date).add(const Duration(days: 1)),
+                  // endTime:
+                  //     DateTime.parse(model.date).add(const Duration(days: 1)),
+                  // endDate:
+                  //     DateTime.parse(model.date).add(const Duration(days: 1)),
                   title: "${model.rank}",
                   date: DateTime.parse(model.date),
                   event: model),
@@ -247,7 +247,7 @@ class _TaskDetailState extends State<TaskDetail> {
                       );
                     },
                     cellAspectRatio: 1,
-                    cellBuilder: (date, events, isToday, isInMonth) {
+                    cellBuilder: (date, events, isToday, isInMonth, _) {
                       // Return your widget to display full day event view.
                       Color? color = events.isNotEmpty
                           ? events[0].event!.rank <= 3

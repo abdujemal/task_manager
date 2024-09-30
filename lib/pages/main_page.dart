@@ -27,6 +27,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        // leading: Text("${myController.score.toStringAsFixed(2)} %"),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

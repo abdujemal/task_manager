@@ -22,8 +22,9 @@ class NotificationService {
         // Channel groups are only visual and are not required
         channelGroups: [
           NotificationChannelGroup(
-              channelGroupKey: 'Task Manageer Channel Group',
-              channelGroupName: 'Task Manageer')
+            channelGroupKey: 'Task Manageer Channel Group',
+            channelGroupName: 'Task Manageer',
+          )
         ],
         debug: true,
       );
@@ -65,6 +66,7 @@ class NotificationService {
           ? NotificationInterval(
               interval: seconds,
               allowWhileIdle: true,
+              // repeats: true,
             )
           : null,
     );

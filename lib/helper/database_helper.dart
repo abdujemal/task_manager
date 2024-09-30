@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -94,6 +93,23 @@ class DatabaseHelper {
     return histories;
   }
 
+  Future<double> getPanishment() async {
+    Database? db = await database;
+
+    var result = await db!.query(
+      DatabaseConst.taskHistory,
+      columns: ['rank'],
+    );
+
+    double sumOfHistories = 0;
+    for (var taskHistory in result) {
+      // TaskHistoryModel model = TaskHistoryModel.fromMap(taskHistory);
+      sumOfHistories += taskHistory['rank'] as int;
+      print(taskHistory['rank']);
+    }
+    return (result.length * 10) - sumOfHistories;
+  }
+
   Future<List<DebtModel>> getDebtList() async {
     Database? db = await database;
 
@@ -137,8 +153,9 @@ class DatabaseHelper {
         where: 'id = ?', whereArgs: [taskModel.id]);
     // AndroidAlarmManager.periodic(const Duration(days: 1), result, ring,
     //     startAt: dateTime);
-    NotificationService().showNotification(
-        result, taskModel.title, "Check it right now or your done!", dateTime);
+    NotificationService().cancelNotification(taskModel.id!);
+    NotificationService().showNotification(taskModel.id!, taskModel.title,
+        "Check it right now or your done!", dateTime);
     return result;
   }
 

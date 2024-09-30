@@ -20,14 +20,16 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     DatabaseHelper().database.then((value) {
       myController.getDebt();
-      myController.getTasks();
+      myController.getTasks().then((value) {
+        myController.calcutaltePercentOfAll().then((value) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const MainPage()),
+              (_) => false);
+        });
+      });
 
       // sendNotification();
-    });
-
-    Future.delayed(const Duration(seconds: 5)).then((value) {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (_) => const MainPage()), (_) => false);
     });
   }
 

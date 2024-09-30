@@ -15,6 +15,8 @@ class MyController extends GetxController {
   Rx<RequestStatus> status = RequestStatus.idle.obs;
   Rx<RequestStatus> taskHistorystatus = RequestStatus.idle.obs;
 
+  RxDouble score = 0.0.obs;
+
   RxInt currentIndex = 0.obs;
 
   setCurrentTabIndex(int val) {
@@ -22,7 +24,20 @@ class MyController extends GetxController {
     update();
   }
 
-  getTasks() async {
+  Future<void> calcutaltePercentOfAll() async {
+    double numerator = 0;
+    double dinerator = 0;
+    for (TaskModel task in akhiraTasks) {
+      await getTaskHistories(task.id!);
+      for (TaskHistoryModel his in taskHistorys) {
+        dinerator += 10;
+        numerator += his.rank;
+      }
+    }
+    score.value = (numerator / dinerator) * 100;
+  }
+
+  Future<void> getTasks() async {
     status.value = RequestStatus.loading;
     try {
       final res = await DatabaseHelper().getTaskList();
@@ -174,12 +189,12 @@ class MyController extends GetxController {
   deleteTask(int id) async {
     status.value = RequestStatus.loading;
     try {
-      await DatabaseHelper().deleteTask(id);
+      // await DatabaseHelper().deleteTask(id);
       await DatabaseHelper().deleteTaskHistory(taskId: id);
-      await getTasks();
-      await getTaskHistories(id);
+      // await getTasks();
+      // await getTaskHistories(id);
       status.value = RequestStatus.loaded;
-      Get.back();
+      // Get.back();
     } catch (e) {
       toast(e.toString(), ToastType.error);
       status.value = RequestStatus.error;

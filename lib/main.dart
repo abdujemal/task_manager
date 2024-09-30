@@ -1,7 +1,5 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/constants.dart';
 import 'package:task_manager/notification_service.dart';
 import 'package:task_manager/pages/splash_page.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
@@ -34,7 +32,7 @@ class MyApp extends StatelessWidget {
       //   GlobalMaterialLocalizations.delegate,
       //   GlobalCupertinoLocalizations.delegate,
       // ],
-      supportedLocales: [const Locale('en', 'US')],
+      supportedLocales: const [Locale('en', 'US')],
       theme: ThemeData.dark(useMaterial3: true),
       home: const SplashPage(),
     );

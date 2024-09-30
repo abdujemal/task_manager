@@ -1,14 +1,13 @@
-
 import 'package:flutter/material.dart';
 
 class SLInput extends StatelessWidget {
   String title, hint;
   TextInputType keyboardType;
-  TextEditingController controller;
+  TextEditingController? controller;
   Color inputColor;
   Color? otherColor;
   bool isObscure;
-  void Function(String val)? onChanged;
+  void Function(String val)? onChanged, onSumbited;
   String? Function(String? val)? validation;
   bool isOutlined;
   IconData? sufixIcon;
@@ -17,6 +16,7 @@ class SLInput extends StatelessWidget {
   double? width;
   double? margin;
   FocusNode? focusNode;
+
   SLInput(
       {Key? key,
       this.isOutlined = false,
@@ -31,10 +31,11 @@ class SLInput extends StatelessWidget {
       this.margin,
       this.focusNode,
       this.onChanged,
+      this.onSumbited,
       required this.title,
       required this.hint,
       required this.keyboardType,
-      required this.controller})
+      this.controller})
       : super(key: key);
 
   @override
@@ -62,6 +63,7 @@ class SLInput extends StatelessWidget {
             maxLines: keyboardType == TextInputType.multiline ? 5 : null,
             readOnly: readOnly ?? false,
             onTap: onTap,
+            onFieldSubmitted: onSumbited,
             onChanged: onChanged,
             validator: validation ??
                 (value) {

@@ -84,6 +84,8 @@ class _AddTaskState extends State<AddTask> {
       startDate = taskModel.startDate;
       status = taskModel.status;
       titleTc.text = taskModel.title;
+      notificationTime = taskModel.scheduleTime;
+      selectedSheduleDateTime = DateTime.parse(taskModel.scheduleTime);
       descriptionTc.text = taskModel.description;
       _timeController.text = DateFormat.jm().format(
         DateTime.parse(taskModel.scheduleTime),
