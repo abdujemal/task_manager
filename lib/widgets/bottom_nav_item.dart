@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:task_manager/my_controller.dart';
 
 class BottomNavItem extends StatelessWidget {
-  String label;
-  IconData iconData;
-  int index;
-  void Function() onTap;
+  final String label;
+  final IconData iconData;
+  final int index;
+  final void Function() onTap;
 
   BottomNavItem({
     Key? key,
